@@ -1,8 +1,18 @@
 var saveToLocalStorage = {
 
+    init:function(){
+        // Render list on load if there's anything saved in local storage.
+        if(localStorage.length !== 0){
+            this.render();
+        }else{
+            document.getElementById("list").innerHTML = "Create your first item.";
+        }
+    },
+
     save: function() {
         var myKeyInput  = document.getElementById('keyInput').value;
         var myNameInput = document.getElementById('valueInput').value;
+        var inputElements = document.getElementsByClassName("textInput");
 
         // Empty previous list
         document.getElementById("list").innerHTML = "";
@@ -10,6 +20,11 @@ var saveToLocalStorage = {
         // Save as key/value pair if local storage supported
         if (typeof(Storage) !== "undefined") {
             localStorage.setItem(myKeyInput, myNameInput);
+
+            // Clear inputs after saving to local storage
+            for (ii=0; ii < inputElements.length; ii++) {
+                inputElements[ii].value = "";
+            };
 
             this.render();
         } else {
@@ -29,11 +44,11 @@ var saveToLocalStorage = {
             if(myKey && myValue){
                 newNode.appendChild(textnode);
                 
-                // console.log(myKey+" : " + myValue);
-
                 document.getElementById("list").appendChild(newNode);
             }
         }
     }
 
 };
+
+saveToLocalStorage.init();
